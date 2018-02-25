@@ -17,7 +17,7 @@ public class RemoveExpiredFileTask {
 	private static final Logger LOGGER = LoggerFactory.getLogger(RemoveExpiredFileTask.class);
 
 	@Value("${tmpdir.scheduler.term}")
-	public final int term = 60000;
+	public static final int term = 60000;
 
 	private FileSchedulerService fileSchedulerService;
 

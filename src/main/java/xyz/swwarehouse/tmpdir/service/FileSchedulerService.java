@@ -39,7 +39,7 @@ public class FileSchedulerService {
 		int size = fileInfos.size();
 		for (int i = 0; i < size; i++) {
 			Path baseDir = this.rootPath.resolve(fileInfos.get(i).getId());
-			StorageService.DeleteDir(baseDir);
+			StorageService.deleteDir(baseDir);
 			LOGGER.info("Deleted expired file({}) in storage", baseDir.toAbsolutePath());
 		}
 	}

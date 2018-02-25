@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Comparator;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,14 +15,19 @@ import org.springframework.stereotype.Service;
 public class StorageService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(StorageService.class);
 	
-	public static void DeleteDir(Path dir) {
+	private StorageService() {
+	}
+
+	public static void deleteDir(Path dir) {
+		Stream<Path> streamPath = null;
 		try {
-				Files.walk(dir)
-				.sorted(Comparator.reverseOrder())
-				.map(Path::toFile)
-				.forEach(File::delete);
-			} catch (IOException e) {
-				LOGGER.error("Delete dir failed({})", e);
-			}
+			streamPath = Files.walk(dir);
+			streamPath.sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+		} catch (IOException e) {
+			LOGGER.error("Delete dir failed({})", e);
+		} finally {
+			if (streamPath != null)
+				streamPath.close();
+		}
 	}
 }
