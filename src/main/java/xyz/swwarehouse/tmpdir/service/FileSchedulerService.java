@@ -28,11 +28,13 @@ public class FileSchedulerService {
 	}
 
 	public List<FileInfo> getExpiredFileInfo() {
-		return fileRepository.findByExpireTimeLessThan(new Date().getTime());
+		return fileRepository.findByExpireTimeLessThan(new Date());
 	}
 
 	public void deleteFileInfos(List<FileInfo> fileInfos) {
-		fileRepository.delete(fileInfos);
+		for(FileInfo fileInfo: fileInfos) {
+			fileRepository.deleteById(fileInfo.getId());	
+		}
 	}
 
 	public void deleteFiles(List<FileInfo> fileInfos) {

@@ -1,11 +1,13 @@
 package xyz.swwarehouse.tmpdir.repository;
 
 import java.util.ArrayList;
+import java.util.Date;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
 import xyz.swwarehouse.tmpdir.entity.FileInfo;
 
-public interface FileInfoRepository extends CrudRepository<FileInfo, String> {
-	ArrayList<FileInfo> findByExpireTimeLessThan(long time);
+public interface FileInfoRepository extends MongoRepository<FileInfo, String> {
+	ArrayList<FileInfo> findByExpireTimeLessThan(Date time);
+	long deleteById(String id);
 }
