@@ -61,7 +61,7 @@ public class FileInfoUtil {
 		return fileInfo;
 	}
 
-	private FileInfo createFileInfo(long submissionTime) {
+	private FileInfo createFileInfo(Date submissionTime) {
 		FileInfo fileInfo = createFileInfo();
 		fileInfo.setSubmissionTime(submissionTime);
 		fileInfo.setExpireTime(createExpireTime(fileInfo));
@@ -72,23 +72,23 @@ public class FileInfoUtil {
 		return UUID.randomUUID().toString();
 	}
 
-	private long createSubmissionTime() {
-		return new Date().getTime();
+	private Date createSubmissionTime() {
+		return new Date();
 	}
 
-	private long createExpiredSubmissionTime() {
-		return createAfterTime(new Date().getTime(), -(expireTermDay + 1));
+	private Date createExpiredSubmissionTime() {
+		return createAfterTime(new Date(), -(expireTermDay + 1));
 	}
 
-	private long createExpireTime(FileInfo fileInfo) {
+	private Date createExpireTime(FileInfo fileInfo) {
 		return createAfterTime(fileInfo.getSubmissionTime(), expireTermDay);
 	}
 
-	private long createAfterTime(long startTime, int termDay) {
+	private Date createAfterTime(Date startTime, int termDay) {
 		Calendar c = Calendar.getInstance();
-		c.setTime(new Date(startTime));
+		c.setTime(startTime);
 		c.add(Calendar.DATE, termDay);
-		return c.getTime().getTime();
+		return c.getTime();
 	}
 
 	private void storeFile(FileInfo fileInfo, int idx) throws IOException {
