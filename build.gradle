@@ -1,0 +1,58 @@
+buildscript {
+	ext {
+		springBootVersion = '1.5.8.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+		maven {
+			url "https://plugins.gradle.org/m2/"
+		}
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6.2"
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'org.sonarqube'
+apply plugin: 'jacoco'
+
+group = 'xyz.sw2h.tmpdir'
+version = '0.0.1'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+
+dependencies {
+	compile("org.springframework.boot:spring-boot-starter-data-mongodb")
+	compile('mysql:mysql-connector-java')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+	testCompile('com.h2database:h2')
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled false 
+        html.enabled true 
+    }
+}
+check.dependsOn jacocoTestReport
+
+sonarqube {
+    properties {
+        property "sonar.host.url", ""
+        property "sonar.login", "***"
+        property "sonar.projectName", "tmpdir/scheduler"
+        property "sonar.projectKey", "tmpdir-scheduler"
+        property "sonar.sources", "src/main"
+        property "sonar.tests", "src/test"
+        property "sonar.sourceEncoding", "UTF-8"
+        property "sonar.jacoco.reportPaths", "build/jacoco/test.exec"
+    }
+}
